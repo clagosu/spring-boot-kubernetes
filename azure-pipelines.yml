@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: Hello, world!
+- script: errormessage=$(Hello, world!); echo $errormessage
   displayName: 'Run a one-line script'
 
 
