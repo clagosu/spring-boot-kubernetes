@@ -13,6 +13,14 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'tarea-devsecops'
+    organization: 'clagosu'
+    projectKey: 'clagosu_spring-boot-kubernetes'
+    projectName: 'spring-boot-kubernetes'
+    scannerMode: 'Other'
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -22,4 +30,7 @@ steps:
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+
+
