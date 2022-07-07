@@ -13,25 +13,40 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'tarea-devsecops'
-    organization: 'clagosu'
-    #projectKey: 'clagosu_spring-boot-kubernetes'
-    #projectName: 'spring-boot-kubernetes'
-    scannerMode: 'Other'
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'clean verify sonar:sonar'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
-    #sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
+    sonarQubeRunAnalysis: false
+
+- task: CopyFiles@2
+  inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: |
+        **/build/libs/*.jar
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: appJar
+    publishLocation: 'Container'
+
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'appJar'
+    downloadPath: '$(System.ArtifactsDirectory)'
+- task: dependency-check-build-task@6
+  inputs:
+    projectName: 'spring-boot'
+    scanPath: '$(Build.ArtifactStagingDirectory)'
+    format: 'HTML'
 
 
