@@ -10,44 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
+- script: Hello, world!
   displayName: 'Run a one-line script'
-
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-
-- task: CopyFiles@2
-  inputs:
-      sourceFolder: '$(Build.SourcesDirectory)'
-      contents: |
-        **/target/*.jar
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: appJar
-    publishLocation: 'Container'
-
-- task: DownloadBuildArtifacts@1
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'appJar'
-    downloadPath: '$(System.ArtifactsDirectory)'
-- task: dependency-check-build-task@6
-  inputs:
-    projectName: 'spring-boot'
-    scanPath: '$(Build.ArtifactStagingDirectory)'
-    format: 'HTML'
-    failOnCVSS: '3'
 
 
