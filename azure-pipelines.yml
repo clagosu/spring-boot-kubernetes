@@ -48,5 +48,6 @@ steps:
     projectName: 'spring-boot'
     scanPath: '$(Build.ArtifactStagingDirectory)'
     format: 'HTML'
+    failOnCVSS: '3'
 
 
