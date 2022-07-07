@@ -28,7 +28,7 @@ steps:
   inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
       contents: |
-        **/build/libs/*.jar
+        **/target/*.jar
       targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
